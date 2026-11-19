@@ -75,6 +75,7 @@ docker run -d \
   --restart always \
   -p 3000:8080 \
   -v open-webui:/app/backend/data \
+  -e OLLAMA_BASE_URL=http://localhost:11434 \
   ghcr.io/open-webui/open-webui:main
 ```
 
@@ -155,6 +156,7 @@ docker run -d \
   --restart always \
   -p 3000:8080 \
   -v open-webui:/app/backend/data \
+  -e OLLAMA_BASE_URL=http://localhost:11434 \
   ghcr.io/open-webui/open-webui:main
 ```
 
@@ -166,22 +168,51 @@ This keeps your data in the `open-webui` Docker volume. If you used a different 
 
 You can use Ollama from VS Code with an extension such as Continue or an Ollama-aware AI extension.
 
-### Basic setup
+### Setup and Configuration
 
-1. Open VS Code.
-2. Install an extension that supports local LLMs with Ollama.
-3. Set the provider to Ollama.
-4. Use the base URL:
+1. **Install an Ollama-compatible extension**:
+   - Install an extension like "Continue" or "Ollama" from the VS Code marketplace
+   - Make sure it supports local LLMs and Ollama integration
+
+2. **Configure the Ollama connection**:
+   - Open VS Code settings (Ctrl+,)
+   - Look for the Ollama extension settings
+   - Set the provider to "Ollama"
+   - Configure the base URL as:
 
 ```text
 http://localhost:11434
 ```
 
-5. Select a model such as:
+3. **Verify model availability**:
+   - After configuring, restart VS Code or reload the window
+   - Check that your Ollama models (like qwen2.5:7b) appear in the model selection dropdown
+   - If models don't show up, ensure Ollama is running and accessible
 
-```text
-qwen2.5:7b
-```
+### Troubleshooting Common Issues
+
+#### Models not showing up in VS Code
+1. Ensure Ollama service is running:
+   ```bash
+   ollama serve
+   ```
+2. Check if models are available via command line:
+   ```bash
+   ollama list
+   ```
+3. Restart the VS Code extension or reload the window
+4. Verify the Ollama base URL in extension settings matches your local setup
+
+#### Confusion with Copilot or other AI services
+1. **Disable Copilot integration** in VS Code if you want to exclusively use Ollama:
+   - Go to Settings → Extensions → GitHub Copilot
+   - Disable the extension or uncheck "Enable Copilot"
+2. **Use explicit model selection**: Always explicitly select your local Ollama model from the dropdown when initiating chat or code completion
+
+#### Model Selection Issues
+1. When starting a new chat or code completion, ensure you're selecting the correct local model:
+   - Look for models with names like `qwen2.5:7b` (or whatever you pulled)
+   - Avoid selecting cloud-based models if you want to stay local
 
 ### Start VS Code integration
 
