@@ -47,6 +47,21 @@ If you want it as a system service:
 sudo systemctl enable --now ollama
 ```
 
+To disable auto-start on boot:
+```bash
+sudo systemctl disable ollama
+```
+
+To manually start Ollama (if disabled):
+```bash
+sudo systemctl start ollama
+```
+
+To check the status of Ollama service:
+```bash
+sudo systemctl status ollama
+```
+
 ### Stop Ollama
 
 ```bash
@@ -244,6 +259,33 @@ ollama serve
 sudo systemctl stop ollama
 docker stop open-webui
 ```
+
+## Context Size Configuration
+
+To configure the context size for Ollama models:
+
+1. **View current model settings**:
+   ```bash
+   ollama show qwen2.5:7b
+   ```
+
+2. **Create or modify a model with custom context size**:
+   ```bash
+   ollama create my-qwen -f ./Modelfile
+   ```
+   
+   Where `Modelfile` contains:
+   ```
+   FROM qwen2.5:7b
+   PARAMETER temperature 0.7
+   PARAMETER num_ctx 8192
+   ```
+
+3. **Set context size for existing models** (requires model recreation):
+   - Stop Ollama service: `sudo systemctl stop ollama`
+   - Delete the model: `ollama delete qwen2.5:7b`
+   - Recreate with new context size: `ollama create qwen2.5:7b -f ./Modelfile`
+   - Start Ollama service: `sudo systemctl start ollama`
 
 ## Related
 
